@@ -1,5 +1,4 @@
 const mysql = require('mysql2');
-const express = require('express');
 const inquirer = require('inquirer');
 const table = require('console.table');
 
@@ -10,8 +9,12 @@ const db = mysql.createConnection({
   password: 'elatedink973',
   database: 'company_db'
 },
-console.log('Accessed the company_db databse.')
+  console.log('Accessed the company_db databse.')
 );
+
+const deptArray = [];
+const roleArray = [];
+const empArray = [];
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +33,7 @@ function inquirerPrompt() {
         'Add a department',
         'Add a role',
         'Add an employee',
-        'Update an employee role'],
+        'Exit Program'],
     },
 
     {
@@ -61,69 +64,83 @@ function inquirerPrompt() {
       when: (input) => input.firstQuestion === 'Add a role'
     },
 
-    {
-      type: 'input',
-      name: 'firstName',
-      message: 'What is the first name of the new employee?',
-      when: (input) => input.firstQuestion === 'Add an employee'
-    },
-
-    {
-      type: 'input',
-      name: 'lastName',
-      message: 'What is the last name of the new employee?',
-      when: (input) => input.firstQuestion === 'Add an employee'
-    },
-
-    {
-      type: 'list',
-      name: 'empRole',
-      message: 'What is the role of the employee?',
-      choices: [
-
-      ],
-      when: (input) => input.firstQuestion === 'Add an employee'
-    },
-
-    {
-      type: 'list',
-      name: 'empManager',
-      message: 'Who is the manager of the employee?',
-      choices: [
-
-      ],
-      when: (input) => input.firstQuestion === 'Add an employee'
-    }
 
   ])
     .then((answers) => {
       if (answers.firstQuestion === 'View all departments') {
         db.query(
-          'SELECT * FROM department', function (err, results) {
+          'SELECT * FROM department', function (results) {
             console.table(results);
+            inquirerPrompt();
           })
       }
 
       if (answers.firstQuestion === 'View all roles') {
         db.query(
-          'SELECT * FROM position', function (err, results) {
+          'SELECT * FROM position', function (results) {
             console.table(results);
+            inquirerPrompt();
           })
       }
 
       if (answers.firstQuestion === 'View all employees') {
         db.query(
-          'SELECT * FROM employee', function (err, results) {
+          'SELECT * FROM employee', function (results) {
             console.table(results);
+
           })
+      }
+
+      if (answers.firstQuestion === 'Add a department') {
+        addDept()
+      }
+
+      if (answers.firstQuestion === 'Add a role') {
+        addRole();
+      }
+
+      if (answers.firstQuestion === 'Add an employee') {
+        addEmp();
       }
 
     })
     .catch((error) => {
       if (error.isTtyError) {
         // Prompt couldn't be rendered in the current environment
-      } 
+      }
     });
+}
+//------------------------------------------------------------------------------------------------------------------
+function addEmp() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'firstName',
+      message: 'What is the first name of the new employee?',
+    },
+
+    {
+      type: 'input',
+      name: 'lastName',
+      message: 'What is the last name of the new employee?',
+    },
+
+    {
+      type: 'list',
+      name: 'empRole',
+      message: 'What is the role of the employee?',
+      choices: roleArray,
+    },
+
+    {
+      type: 'list',
+      name: 'empManager',
+      message: 'Who is the manager of the employee?',
+      choices: empArray
+    }
+  
+
+  ])
 }
 //------------------------------------------------------------------------------------------------------------------
 
@@ -159,3 +176,4 @@ console.table([
 ]);
 
   //------------------------------------------------------------------------------------------------------------------
+  inquirerPrompt();

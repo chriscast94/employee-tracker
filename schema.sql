@@ -3,25 +3,28 @@ CREATE DATABASE company_db;
 
 USE company_db;
 
--- Create Department table with id and name
+DROP TABLE IF EXISTS department;
 CREATE TABLE department (
     department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     department_name VARCHAR(30)
 );
 
---Create role/position table with id, title, salary, and department id
+DROP TABLE IF EXISTS position;
 CREATE TABLE position (
     position_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(30),
     salary DECIMAL(9,2),
-    department_id INT REFERENCES department(department_id)
+    department_id INT NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES department(department_id)
 );
 
---Create employee table with id, first name, last name, role id, and manager id
+DROP TABLE IF EXISTS employee;
 CREATE TABLE employee (
     employee_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    role_id INT NOT NULL REFERENCES position(position_id),
-    manager_id INT REFERENCES employee(employee_id)
+    role_id INT NOT NULL,
+    manager_id INT,
+    FOREIGN KEY (role_id) REFERENCES position(id)
+    FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
