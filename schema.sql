@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS employee_db;
-CREATE DATABASE employee_db;
+DROP DATABASE IF EXISTS company_db;
+CREATE DATABASE company_db;
 
-USE employee_db;
+USE company_db;
 
 -- Create Department table with id and name
 CREATE TABLE department (
     department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(30)
+    department_name VARCHAR(30)
 );
 
 --Create role/position table with id, title, salary, and department id
