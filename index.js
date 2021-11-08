@@ -36,40 +36,11 @@ function inquirerPrompt() {
         'Exit Program'],
     },
 
-    {
-      type: 'input',
-      name: 'newDepartment',
-      message: 'What is the name of the department?',
-      when: (input) => input.firstQuestion === 'Add a department'
-    },
-
-    {
-      type: 'input',
-      name: 'newRole',
-      message: 'What is the name of the new role?',
-      when: (input) => input.firstQuestion === 'Add a role'
-    },
-
-    {
-      type: 'input',
-      name: 'roleSalary',
-      message: 'What is the salary of the new role?',
-      when: (input) => input.firstQuestion === 'Add a role'
-    },
-
-    {
-      type: 'input',
-      name: 'roleDept',
-      message: 'What department is the new role in?',
-      when: (input) => input.firstQuestion === 'Add a role'
-    },
-
-
   ])
-    .then((answers) => {
+    .then(answers => {
       if (answers.firstQuestion === 'View all departments') {
         db.query(
-          'SELECT * FROM department', function (results) {
+          'SELECT * FROM department', function (err, results) {
             console.table(results);
             inquirerPrompt();
           })
@@ -77,7 +48,7 @@ function inquirerPrompt() {
 
       if (answers.firstQuestion === 'View all roles') {
         db.query(
-          'SELECT * FROM position', function (results) {
+          'SELECT * FROM position', function (err, results) {
             console.table(results);
             inquirerPrompt();
           })
@@ -85,7 +56,7 @@ function inquirerPrompt() {
 
       if (answers.firstQuestion === 'View all employees') {
         db.query(
-          'SELECT * FROM employee', function (results) {
+          'SELECT * FROM employee', function (err, results) {
             console.table(results);
 
           })
@@ -111,7 +82,80 @@ function inquirerPrompt() {
     });
 }
 //------------------------------------------------------------------------------------------------------------------
+// Add department function for prompt and push into table and array
+function addDept() {
+  db.query('SELECT * FROM department'
+
+  )
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'newDepartment',
+      message: 'What is the name of the department?',
+    },
+  ])
+    .then(answers => {
+      db.query(
+        `INSERT INTO department (department_name)
+      VALUES ("${answers.newDepartment}")`
+      );
+      //push into deptArray
+      //deptArray.push(db.query('SELECT department_name from department'));
+      console.log(deptArray);
+      inquirerPrompt();
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      }
+    });
+}
+//------------------------------------------------------------------------------------------------------------------
+//Function to add role and push into role array
+function addRole() {
+  db.query('SELECT * FROM position'
+
+  )
+  inquirer.prompt([
+
+    {
+      type: 'input',
+      name: 'newRole',
+      message: 'What is the name of the new role?',
+    },
+
+    {
+      type: 'input',
+      name: 'roleSalary',
+      message: 'What is the salary of the new role?',
+    },
+
+    {
+      type: 'list',
+      name: 'roleDept',
+      message: 'What department is the new role in?',
+      choices: deptArray
+    },
+  ])
+    .then(answers => {
+      db.query(
+        `INSERT INTO position (title, salary, department_id) 
+        VALUES ("${answers.newRole}, ${answers.roleSalary}, ${answers.roleDept}")`
+      ); console.log(answers);
+      inquirerPrompt();
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      }
+    });
+}
+//------------------------------------------------------------------------------------------------------------------
+//Add employee function for prompt
 function addEmp() {
+  db.query(
+    'SELECT * FROM employee'
+  )
   inquirer.prompt([
     {
       type: 'input',
@@ -138,42 +182,46 @@ function addEmp() {
       message: 'Who is the manager of the employee?',
       choices: empArray
     }
-  
-
   ])
+    .then(answers => {
+      db.query(
+        `INSERT INTO employee (first_name, last_name, position_id, manager_id)
+      ${answers.firstName}, ${answers.lastName}, ${answers.empRole}, ${empManager}`
+      )
+    })
 }
 //------------------------------------------------------------------------------------------------------------------
-
+//Codes taken from examples
 //MySQL
 
-// simple query
-db.query(
-  'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
-  function (err, results, fields) {
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-  }
-);
+// // simple query
+// db.query(
+//   'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
+//   function (err, results, fields) {
+//     console.log(results); // results contains rows returned by server
+//     console.log(fields); // fields contains extra meta data about results, if available
+//   }
+// );
 
-// with placeholder
-db.query(
-  'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
-  ['Page', 45],
-  function (err, results) {
-    console.log(results);
-  }
-);
+// // with placeholder
+// db.query(
+//   'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
+//   ['Page', 45],
+//   function (err, results) {
+//     console.log(results);
+//   }
+// );
+// //------------------------------------------------------------------------------------------------------------------
+// // Table
+// console.table([
+//   {
+//     name: 'foo',
+//     age: 10
+//   }, {
+//     name: 'bar',
+//     age: 20
+//   }
+// ]);
+
 //------------------------------------------------------------------------------------------------------------------
-// Table
-console.table([
-  {
-    name: 'foo',
-    age: 10
-  }, {
-    name: 'bar',
-    age: 20
-  }
-]);
-
-  //------------------------------------------------------------------------------------------------------------------
-  inquirerPrompt();
+inquirerPrompt();
