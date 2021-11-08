@@ -13,8 +13,11 @@ const db = mysql.createConnection({
 );
 
 const deptArray = [];
+console.log(deptArray);
 const roleArray = [];
+console.log(roleArray);
 const empArray = [];
+console.log(empArray);
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -100,10 +103,11 @@ function addDept() {
       VALUES ("${answers.newDepartment}")`
       );
       //push into deptArray
-      //deptArray.push(db.query('SELECT department_name from department'));
+      deptArray.push(`${answers.newDepartment}`);
       console.log(deptArray);
       inquirerPrompt();
     })
+    //catches error - retrived this code from MYSQL page here: https://www.npmjs.com/package/mysql2
     .catch((error) => {
       if (error.isTtyError) {
         // Prompt couldn't be rendered in the current environment
@@ -141,9 +145,11 @@ function addRole() {
       db.query(
         `INSERT INTO position (title, salary, department_id) 
         VALUES ("${answers.newRole}, ${answers.roleSalary}, ${answers.roleDept}")`
-      ); console.log(answers);
+      );
+      roleArray.push (`${answers.newRole}`);
       inquirerPrompt();
     })
+    //catches error
     .catch((error) => {
       if (error.isTtyError) {
         // Prompt couldn't be rendered in the current environment
@@ -188,7 +194,15 @@ function addEmp() {
         `INSERT INTO employee (first_name, last_name, position_id, manager_id)
       ${answers.firstName}, ${answers.lastName}, ${answers.empRole}, ${empManager}`
       )
+      roleArray.push (`${answers.newRole}`);
+      inquirerPrompt();
     })
+    //catches error
+    .catch((error) => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      }
+    });
 }
 //------------------------------------------------------------------------------------------------------------------
 //Codes taken from examples
