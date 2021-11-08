@@ -15,6 +15,9 @@ Usage
 Open index.html through VS Code, right click on the page, and click on Open in Default Browser button if open in browser extension is enabled. To view files in the GitHub Repository, click here: https://github.com/chriscast94/employee-tracker
 
 Below are the screenshots of the code:
+![image](https://user-images.githubusercontent.com/53799375/140703408-90f21df0-aa72-4739-88b3-a65108092824.png)
+![image](https://user-images.githubusercontent.com/53799375/140703437-ddb2d23c-2eac-40cb-9497-e4d4086a800e.png)
+![image](https://user-images.githubusercontent.com/53799375/140703482-3f402970-1c62-4bca-ad43-3738f27efc43.png)
 
 
 ## Credits
