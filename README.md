@@ -1,10 +1,10 @@
 # employee-tracker
 ## Description
-I wanted to create a README.md file generator that will autopopulate the difference section of a README file with the input from a user.
+I wanted to create an employee generator that would allow you to view and add employees, departments, and roles use MYSQL. 
 
 ## Installation
 Open Github and GitBash
-Click on link for Repository "readme-generator"
+Click on link for Repository "emplployee-tracker"
 Click the green button
 Click "Clone with HTTPS" or Use with SSH
 Go to Git Bash
@@ -18,9 +18,12 @@ Below are the screenshots of the code:
 
 
 ## Credits
-Received starting help from Professor Farish
+Received help from 
 Developed by Christian Castillo
-Received assistants from my classmates
+Received example code of console table, mysql2, and inquirer from their respective sites:
+    https://www.npmjs.com/package/mysql2
+    https://www.npmjs.com/package/inquirer
+    https://www.npmjs.com/package/console.table
 
 ## License
 Copyright (c) [2021] [Christian J. Castillo]

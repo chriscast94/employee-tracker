@@ -14,9 +14,9 @@ const db = mysql.createConnection({
 
 const deptArray = [];
 console.log(deptArray);
-const roleArray = [];
+const roleArray = ["HR Representative", "Junior Accountant", "Full Stack Developer"];
 console.log(roleArray);
-const empArray = [];
+const empArray = ["Ash Ketchum", "Alice Liddell", "Lyra Silvertongue"];
 console.log(empArray);
 
 //------------------------------------------------------------------------------------------------------------------
