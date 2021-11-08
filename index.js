@@ -12,7 +12,7 @@ const db = mysql.createConnection({
   console.log('Accessed the company_db databse.')
 );
 
-const deptArray = [];
+const deptArray = ["HR", "Accounting", "Tech Development"];
 console.log(deptArray);
 const roleArray = ["HR Representative", "Junior Accountant", "Full Stack Developer"];
 console.log(roleArray);
@@ -61,12 +61,12 @@ function inquirerPrompt() {
         db.query(
           'SELECT * FROM employee', function (err, results) {
             console.table(results);
-
+            inquirerPrompt();
           })
       }
 
       if (answers.firstQuestion === 'Add a department') {
-        addDept()
+        addDept();
       }
 
       if (answers.firstQuestion === 'Add a role') {
@@ -104,7 +104,7 @@ function addDept() {
       );
       //push into deptArray
       deptArray.push(`${answers.newDepartment}`);
-      console.log(deptArray);
+      //console.log(deptArray);
       inquirerPrompt();
     })
     //catches error - retrived this code from MYSQL page here: https://www.npmjs.com/package/mysql2
@@ -144,10 +144,10 @@ function addRole() {
     .then(answers => {
       db.query(
         `INSERT INTO position (title, salary, department_id) 
-        VALUES ("${answers.newRole}, ${answers.roleSalary}, ${answers.roleDept}")`
+        VALUES ("${answers.newRole}", "${answers.roleSalary}", "${answers.roleDept}")`
       );
-      roleArray.push (`${answers.newRole}`);
       inquirerPrompt();
+      //roleArray.push(`${answers.newRole}`);
     })
     //catches error
     .catch((error) => {
@@ -192,9 +192,9 @@ function addEmp() {
     .then(answers => {
       db.query(
         `INSERT INTO employee (first_name, last_name, position_id, manager_id)
-      ${answers.firstName}, ${answers.lastName}, ${answers.empRole}, ${empManager}`
-      )
-      roleArray.push (`${answers.newRole}`);
+      VALUES ("${answers.firstName}", "${answers.lastName}", "${answers.empRole}", "${empManager}")`
+      );
+      //roleArray.push(`${answers.newRole}`);
       inquirerPrompt();
     })
     //catches error
